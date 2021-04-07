@@ -12,6 +12,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 import Container from "@material-ui/core/Container"
+import valid from "../../utils/valid"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -43,11 +44,12 @@ export default function SignUp() {
 
   const submitHandler = (e) => {
     e.preventDefault()
-    if (password !== confirmPassword) {
-      setMessage("Passwords do not match")
-    } else {
-      console.log(firstName, lastName, email, password)
+
+    const errMsg = valid(firstName, lastName, email, password, confirmPassword)
+    if (errMsg) {
+      return console.log(errMsg)
     }
+    console.log(firstName, lastName, email, password, confirmPassword)
   }
 
   return (
