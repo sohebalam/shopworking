@@ -92,13 +92,13 @@ export default function ButtonAppBar() {
             {/* ) : ( */}
             <>
               {" "}
-              <Link style={{ color: "white" }} href="/register">
+              <Link style={{ color: "white" }} href="/auth/register">
                 <Button color="inherit" onClick={registerHandler}>
                   <AssignmentIcon style={{ marginRight: "0.25rem" }} />
                   Register
                 </Button>
               </Link>
-              <Link style={{ color: "white" }} href="/login">
+              <Link style={{ color: "white" }} href="/auth/login">
                 <Button color="inherit" onClick={loginHandler}>
                   <PersonIcon style={{ marginRight: "0.25rem" }} />
                   Login
