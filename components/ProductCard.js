@@ -15,8 +15,8 @@ import {
 } from "@material-ui/core/"
 import Link from "next/link"
 // import Likes from "./Likes"
-// import { likeProduct } from "../redux/actions/productActions"
-import { useDispatch, useSelector } from "react-redux"
+
+// import { useDispatch, useSelector } from "react-redux"
 // import { useHistory } from "react-router-dom"
 
 const useStyles = makeStyles({

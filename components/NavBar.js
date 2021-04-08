@@ -14,6 +14,7 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart"
 import ExitToAppIcon from "@material-ui/icons/ExitToApp"
 import { DataContext } from "../store/GlobalState"
 import Cookie from "js-cookie"
+import Badge from "@material-ui/core/Badge"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NavBar() {
   const { state, dispatch } = useContext(DataContext)
-  const { auth } = state
+  const { auth, cart } = state
   const classes = useStyles()
   const registerHandler = () => {}
   const logoutHandler = () => {
@@ -58,7 +59,7 @@ export default function NavBar() {
               <>
                 <Box
                   style={{
-                    marginRight: "0.25rem",
+                    marginRight: "0.75rem",
                     marginLeft: "0.75rem",
                     marginTop: "0.75",
                   }}
@@ -82,7 +83,13 @@ export default function NavBar() {
                       onClick={logoutHandler}
                       style={{ marginRight: "0.5rem" }}
                     >
-                      <ShoppingCartIcon style={{ marginRight: "0.25rem" }} />
+                      <Badge
+                        badgeContent={cart.length}
+                        color="secondary"
+                        style={{ marginRight: "0.3rem" }}
+                      >
+                        <ShoppingCartIcon />
+                      </Badge>
                       Cart
                     </Button>
                   </Link>
