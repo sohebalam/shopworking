@@ -5,7 +5,7 @@ export const reducers = (state, action) => {
     case ACTIONS.NOTIFY:
       return { ...state, notify: action.payload }
     case ACTIONS.AUTH:
-      return { loading: false, auth: action.payload }
+      return { ...state, loading: false, auth: action.payload }
 
     default:
       return state

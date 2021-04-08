@@ -12,6 +12,9 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 import Container from "@material-ui/core/Container"
+import { DataContext } from "../../store/GlobalState"
+import Cookie from "js-cookie"
+import { postData } from "../../utils/fetchData"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -34,11 +37,37 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Login = ({ location, history }) => {
-  const classes = useStyles()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
 
-  const submitHandler = (e) => {
+  const { state, dispatch } = useContext(DataContext)
+  const { auth } = state
+  const submitHandler = async (e) => {
     e.preventDefault()
+
+    console.log(email, password)
+
+    dispatch({ type: "NOTIFY", payload: { loading: true } })
+
+    const userData = { email, password }
+
+    const res = await postData("auth/login", userData)
+    if (res.err)
+      return dispatch({ type: "NOTIFY", payload: { error: res.err } })
+    dispatch({ type: "NOTIFY", payload: { success: res.message } })
+
+    dispatch({
+      type: "AUTH",
+      payload: { token: res.access_token, user: res.user },
+    })
+    Cookie.set("refreshtoken", res.refresh_token, {
+      path: "api/auth/accessToken",
+      expires: 7,
+    })
+    localStorage.setItem("firstLogin", true)
   }
+
+  const classes = useStyles()
 
   return (
     <Container component="main" maxWidth="xs">
@@ -62,8 +91,8 @@ const Login = ({ location, history }) => {
             name="email"
             autoComplete="email"
             autoFocus
-            // value={email}
-            // onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             variant="outlined"
@@ -74,9 +103,9 @@ const Login = ({ location, history }) => {
             label="Password"
             type="password"
             id="password"
-            // value={password}
+            value={password}
             autoComplete="current-password"
-            // onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <FormControlLabel

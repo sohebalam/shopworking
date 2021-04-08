@@ -4,8 +4,8 @@ import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
 import IconButton from "@material-ui/core/IconButton"
 import MenuIcon from "@material-ui/icons/Menu"
-import logo from "../public/v3.png"
-// import logo from "../public/v3.png"
+// import logo from "../image/v3.jpg"
+// import logo from "../image/v3.png"
 import Image from "next/image"
 import { Button, Typography, Link, Box } from "@material-ui/core"
 import PersonIcon from "@material-ui/icons/Person"
@@ -37,7 +37,7 @@ export default function ButtonAppBar() {
       <AppBar position="static" style={{ color: "primary" }}>
         <Toolbar>
           <IconButton>
-            <Image src={logo} height="40rem" width="40rem" />
+            <Image src="/v3.png" alt="me" width="45" height="45" />
             {/* <img src="../public/v3.png" /> */}
           </IconButton>
 

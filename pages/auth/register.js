@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import Avatar from "@material-ui/core/Avatar"
 import Button from "@material-ui/core/Button"
 import CssBaseline from "@material-ui/core/CssBaseline"
@@ -13,6 +13,8 @@ import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 import Container from "@material-ui/core/Container"
 import valid from "../../utils/valid"
+import { DataContext } from "../../store/GlobalState"
+import { postData } from "../../utils/fetchData"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -42,14 +44,23 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("")
   const classes = useStyles()
 
-  const submitHandler = (e) => {
-    e.preventDefault()
+  const { state, dispatch } = useContext(DataContext)
 
+  const submitHandler = async (e) => {
+    e.preventDefault()
     const errMsg = valid(firstName, lastName, email, password, confirmPassword)
     if (errMsg) {
-      return console.log(errMsg)
+      return dispatch({ type: "NOTIFY", payload: { error: errMsg } })
     }
-    console.log(firstName, lastName, email, password, confirmPassword)
+    dispatch({ type: "NOTIFY", payload: { loading: true } })
+
+    const userData = { firstName, lastName, email, password, confirmPassword }
+
+    const res = await postData("auth/register", userData)
+
+    if (res.err)
+      return dispatch({ type: "NOTIFY", payload: { error: res.err } })
+    return dispatch({ type: "NOTIFY", payload: { success: res.message } })
   }
 
   return (

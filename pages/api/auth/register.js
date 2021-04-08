@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs"
 connectDB()
 export default async (req, res) => {
   switch (req.method) {
-    case " POST":
+    case "POST":
       await register(req, res)
       break
   }
@@ -14,11 +14,14 @@ export default async (req, res) => {
 
 const register = async (req, res) => {
   const { email, password, firstName, lastName, confirmPassword } = req.body
+  console.log(req.body)
 
-  const errMsg = valid(email, password, firstName, lastName, confirmPassword)
+  const errMsg = valid(firstName, lastName, email, password, confirmPassword)
   if (errMsg) {
     return res.status(400).json({ err: errMsg })
   }
+  const user = await User.findOne({ email })
+  if (user) return res.status(400).json({ err: "This email already exists." })
 
   const passwordHash = await bcrypt.hash(password, 12)
 
@@ -28,8 +31,10 @@ const register = async (req, res) => {
     firstName,
     lastName,
   })
-  console.log(newUser)
-  res.status(200).json({ messsage: "New user registered!" })
+
+  await newUser.save()
+
+  res.status(200).json({ message: "New user registered!" })
 
   try {
   } catch (error) {

@@ -2,6 +2,8 @@ const valid = (firstName, lastName, email, password, confirmPassword) => {
   if (!firstName || !lastName || !email || !password || !confirmPassword) {
     return "Please add all fields"
   }
+
+  console.log(firstName, lastName, email, password, confirmPassword)
   if (!validateEmail(email)) {
     return "Please add valid email"
   }
