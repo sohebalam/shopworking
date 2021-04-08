@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
@@ -12,6 +12,8 @@ import PersonIcon from "@material-ui/icons/Person"
 import AssignmentIcon from "@material-ui/icons/Assignment"
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart"
 import ExitToAppIcon from "@material-ui/icons/ExitToApp"
+import { DataContext } from "../store/GlobalState"
+import Cookie from "js-cookie"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,10 +27,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function ButtonAppBar() {
+export default function NavBar() {
+  const { state, dispatch } = useContext(DataContext)
+  const { auth } = state
   const classes = useStyles()
   const registerHandler = () => {}
-  const logoutHandler = () => {}
+  const logoutHandler = () => {
+    Cookie.remove("refreshtoken", { path: "api/auth/accessToken" })
+    localStorage.removeItem("firstLogin")
+    dispatch({ type: "AUTH", payload: {} })
+    dispatch({ type: "NOTIFY", payload: { success: "Logged out!" } })
+  }
   const loginHandler = () => {}
 
   return (
@@ -45,67 +54,67 @@ export default function ButtonAppBar() {
             OpenFreeUni
           </Typography>
           <>
-            {/* {userInfo ? ( */}
-            <>
-              <Box
-                style={{
-                  marginRight: "0.25rem",
-                  marginLeft: "0.75rem",
-                  marginTop: "0.75",
-                }}
-              >
-                <Typography style={{ marginTop: "0.25rem" }}>
-                  {" "}
-                  {/* Hello {userInfo.firstName} {userInfo.lastName} */}
-                </Typography>
-              </Box>
-              <Box
-                style={{
-                  marginTop: "0.25rem",
-                  display: "flex",
-                  justifyContent: "right",
-                  alignItems: "right",
-                }}
-              >
-                <Link style={{ color: "white" }} href="/cart">
+            {Object.keys(auth).length ? (
+              <>
+                <Box
+                  style={{
+                    marginRight: "0.25rem",
+                    marginLeft: "0.75rem",
+                    marginTop: "0.75",
+                  }}
+                >
+                  <Typography style={{ marginTop: "0.25rem" }}>
+                    {" "}
+                    Hello {auth.user?.firstName} {auth.user?.lastName}
+                  </Typography>
+                </Box>
+                <Box
+                  style={{
+                    marginTop: "0.25rem",
+                    display: "flex",
+                    justifyContent: "right",
+                    alignItems: "right",
+                  }}
+                >
+                  <Link style={{ color: "white" }} href="/cart">
+                    <Button
+                      color="inherit"
+                      onClick={logoutHandler}
+                      style={{ marginRight: "0.5rem" }}
+                    >
+                      <ShoppingCartIcon style={{ marginRight: "0.25rem" }} />
+                      Cart
+                    </Button>
+                  </Link>
+                  {/* <Link style={{ color: "white" }} href="/login"> */}
                   <Button
                     color="inherit"
                     onClick={logoutHandler}
                     style={{ marginRight: "0.5rem" }}
                   >
-                    <ShoppingCartIcon style={{ marginRight: "0.25rem" }} />
-                    Cart
+                    <ExitToAppIcon style={{ marginRight: "0.25rem" }} />
+                    LogOut
+                  </Button>
+                  {/* </Link> */}
+                </Box>
+              </>
+            ) : (
+              <>
+                {" "}
+                <Link style={{ color: "white" }} href="/auth/register">
+                  <Button color="inherit" onClick={registerHandler}>
+                    <AssignmentIcon style={{ marginRight: "0.25rem" }} />
+                    Register
                   </Button>
                 </Link>
-                {/* <Link style={{ color: "white" }} href="/login"> */}
-                <Button
-                  color="inherit"
-                  onClick={logoutHandler}
-                  style={{ marginRight: "0.5rem" }}
-                >
-                  <ExitToAppIcon style={{ marginRight: "0.25rem" }} />
-                  LogOut
-                </Button>
-                {/* </Link> */}
-              </Box>
-            </>
-            {/* ) : ( */}
-            <>
-              {" "}
-              <Link style={{ color: "white" }} href="/auth/register">
-                <Button color="inherit" onClick={registerHandler}>
-                  <AssignmentIcon style={{ marginRight: "0.25rem" }} />
-                  Register
-                </Button>
-              </Link>
-              <Link style={{ color: "white" }} href="/auth/login">
-                <Button color="inherit" onClick={loginHandler}>
-                  <PersonIcon style={{ marginRight: "0.25rem" }} />
-                  Login
-                </Button>
-              </Link>
-            </>
-            {/* )} */}
+                <Link style={{ color: "white" }} href="/auth/login">
+                  <Button color="inherit" onClick={loginHandler}>
+                    <PersonIcon style={{ marginRight: "0.25rem" }} />
+                    Login
+                  </Button>
+                </Link>
+              </>
+            )}
           </>
         </Toolbar>
       </AppBar>

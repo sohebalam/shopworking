@@ -15,6 +15,7 @@ import Container from "@material-ui/core/Container"
 import { DataContext } from "../../store/GlobalState"
 import Cookie from "js-cookie"
 import { postData } from "../../utils/fetchData"
+import { useRouter } from "next/router"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 const Login = ({ location, history }) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const router = useRouter()
 
   const { state, dispatch } = useContext(DataContext)
   const { auth } = state
@@ -68,6 +70,11 @@ const Login = ({ location, history }) => {
   }
 
   const classes = useStyles()
+  useEffect(() => {
+    if (Object.keys(auth).length !== 0) {
+      router.push("/")
+    }
+  }, [auth])
 
   return (
     <Container component="main" maxWidth="xs">

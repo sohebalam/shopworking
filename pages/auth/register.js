@@ -15,7 +15,6 @@ import Container from "@material-ui/core/Container"
 import valid from "../../utils/valid"
 import { DataContext } from "../../store/GlobalState"
 import { postData } from "../../utils/fetchData"
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
