@@ -46,14 +46,28 @@ export default function NavBar() {
       {/* <Container> */}
       <AppBar position="static" style={{ color: "primary" }}>
         <Toolbar>
-          <IconButton>
-            <Image src="/v3.png" alt="me" width="45" height="45" />
-            {/* <img src="../public/v3.png" /> */}
-          </IconButton>
+          <Link href="/">
+            <IconButton>
+              <Image src="/v3.png" alt="me" width="45" height="45" />
+              {/* <img src="../public/v3.png" /> */}
+            </IconButton>
+          </Link>
 
           <Typography variant="h6" className={classes.title}>
             OpenFreeUni
           </Typography>
+          <Link style={{ color: "white" }} href="/cart/cart">
+            <Button color="inherit" style={{ marginRight: "0.5rem" }}>
+              <Badge
+                badgeContent={cart.length}
+                color="secondary"
+                style={{ marginRight: "0.3rem" }}
+              >
+                <ShoppingCartIcon />
+              </Badge>
+              Cart
+            </Button>
+          </Link>
           <>
             {Object.keys(auth).length ? (
               <>
@@ -77,22 +91,6 @@ export default function NavBar() {
                     alignItems: "right",
                   }}
                 >
-                  <Link style={{ color: "white" }} href="/cart">
-                    <Button
-                      color="inherit"
-                      onClick={logoutHandler}
-                      style={{ marginRight: "0.5rem" }}
-                    >
-                      <Badge
-                        badgeContent={cart.length}
-                        color="secondary"
-                        style={{ marginRight: "0.3rem" }}
-                      >
-                        <ShoppingCartIcon />
-                      </Badge>
-                      Cart
-                    </Button>
-                  </Link>
                   {/* <Link style={{ color: "white" }} href="/login"> */}
                   <Button
                     color="inherit"

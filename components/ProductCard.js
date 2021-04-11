@@ -16,8 +16,9 @@ import {
 import Link from "next/link"
 // import Likes from "./Likes"
 
-// import { useDispatch, useSelector } from "react-redux"
-// import { useHistory } from "react-router-dom"
+import { DataContext } from "../store/GlobalState"
+import { useContext } from "react"
+import { addToCart } from "../store/Actions"
 
 const useStyles = makeStyles({
   root: {
@@ -26,22 +27,10 @@ const useStyles = makeStyles({
 })
 
 const ProductCard = ({ product }) => {
-  //   const history = useHistory()
-
-  //   const user = JSON.parse(localStorage.getItem("userInfo"))
-
-  //   const dispatch = useDispatch()
-  const submitHandler = (e) => {
-    e.preventDefault()
-    if (user) {
-      //   dispatch(likeProduct(product._id))
-      //   history.go(0)
-    }
-  }
+  const submitHandler = (e) => {}
   const classes = useStyles()
-
-  //   useEffect(() => {}, [product.likes, dispatch, history])
-
+  const { state, dispatch } = useContext(DataContext)
+  const { cart } = state
   return (
     <>
       <Card style={{ height: "100%", padding: "0.75rem" }}>
@@ -62,14 +51,15 @@ const ProductCard = ({ product }) => {
               variant="contained"
               color="secondary"
               style={{ marginRight: "0.8rem" }}
+              onClick={() => dispatch(addToCart(product, cart))}
             >
-              <Link
+              {/* <Link
                 href={`/product/${product._id}`}
                 style={{ color: "white" }}
                 underline="none"
-              >
-                Buy Now
-              </Link>
+              > */}
+              Buy Now
+              {/* </Link> */}
             </Button>
             <Typography
               style={{ color: "black", marginLeft: "0.5rem" }}

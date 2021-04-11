@@ -16,19 +16,25 @@ import { useRouter } from "next/router"
 import { getData } from "../../utils/fetchData"
 import { useState } from "react"
 
+import { DataContext } from "../../store/GlobalState"
+import { useContext } from "react"
+import { addToCart } from "../../store/Actions"
+
 const useStyles = makeStyles({
   root: {
     height: 300,
   },
 })
 
-const addToCartHandler = () => {
-  // setQty(qty + 1)
-  // history.push(`/cart/${match.params.id}?qty=${qty}`)
-}
+// const addToCartHandler = () => {
+//   // setQty(qty + 1)
+//   // history.push(`/cart/${match.params.id}?qty=${qty}`)
+// }
 
 const ProductDetail = (props) => {
   const [product, setProduct] = useState(props.product)
+  const { state, dispatch } = useContext(DataContext)
+  const { cart } = state
 
   const classes = useStyles()
   const router = useRouter()
@@ -79,9 +85,8 @@ const ProductDetail = (props) => {
                   variant="contained"
                   size="medium"
                   fullWidth
-                  onClick={addToCartHandler}
-                  onSubmit={() => setQty(qty + 1)}
-                  onClick={addToCartHandler}
+                  // onSubmit={() => setQty(qty + 1)}
+                  onClick={() => dispatch(addToCart(product, cart))}
                 >
                   Add to Card
                 </Button>
